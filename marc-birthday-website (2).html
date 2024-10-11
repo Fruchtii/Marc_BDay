@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcs Fantastischer Geburtstag</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: #FFD700;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #FFF;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #FF6B6B;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px #FFD700;
+        }
+        .poem {
+            background-color: #E0FFFF;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .stanza {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .clickable {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .quark { background-color: #FFA500; }
+        .tomato { background-color: #FF6347; }
+        .duck { background-color: #32CD32; }
+        .clickable:hover { 
+            transform: scale(1.1);
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        #park {
+            height: 200px;
+            background: linear-gradient(to bottom, #87CEEB, #90EE90);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        #marc {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+        #marc:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+        .tree {
+            position: absolute;
+            bottom: 0;
+            font-size: 60px;
+        }
+        #confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        #cat-segment {
+            margin-top: 20px;
+            background-color: #FFF0F5;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        #cat {
+            font-size: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #cat:hover {
+            transform: scale(1.2);
+        }
+        .instruction {
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Marcs Fantastischer Geburtstag! 🎉</h1>
+        <div class="poem">
+            <div class="stanza">
+                <p>Marc isst gerne <span class="clickable quark" onclick="showQuark()">Quark</span>,<br>
+                Weil Marc Quark mag.<br>
+                Auch Marc mag <span class="clickable tomato" onclick="showTomato()">Tomatenmark</span>,<br>
+                Weil Marc Tomaten mag.<br>
+                Da wird er richtig stark, denn einen Biss<br>
+                Von Tomaten, die er nie vergisst.</p>
+            </div>
+            
+            <div class="stanza">
+                <p>Marc füttert gerne <span class="clickable duck" onclick="showDuck()">Enten</span> im Park,<br>
+                Weil er ihr Quarken so mag<br>
+                Und weil Marc den Park mag.</p>
+            </div>
+            
+            <div class="stanza">
+                <p>Was Marc nicht mag:<br>
+                Marc mag keinen Quark mit Tomatenmark,<br>
+                Was ich nicht zu verstehen vermag,<br>
+                Weil doch Marc Quark und Tomaten mag.</p>
+            </div>
+            
+            <div class="stanza">
+                <p>Eines Tages sitzt der Marc im Park und isst dort seinen Quark.<br>
+                Da sieht er im Dunklen voller Schrecken was,<br>
+                Wo's düster, still und kalt, spürt Marc das Schauern - und bleibt doch halt.</p>
+            </div>
+            
+            <div class="stanza">
+                <p>Marc fährt der Schrecken bis durchs Mark und er findet's ganz schön arg,<br>
+                Doch Marc mag Tomatenmark und auch Quark, und so vermag es Marc nicht, den Quark zu lassen - denn er mag ihn einfach viel zu sehr, in allen Maßen.</p>
+            </div>
+        </div>
+        <div id="park">
+            <div id="marc" onclick="moveMarcRandomly()">🧑</div>
+            <div class="tree" style="left: 10%;">🌳</div>
+            <div class="tree" style="left: 30%;">🌲</div>
+            <div class="tree" style="right: 25%;">🌳</div>
+            <div class="tree" style="right: 5%;">🌲</div>
+        </div>
+        <p class="instruction">Klicke auf Marc, um ihn zu bewegen!</p>
+        <div id="cat-segment">
+            <h2>Marcs Katzenecke</h2>
+            <p>Marc liebt auch Katzen! Klicke auf die Katze, um sie zu streicheln.</p>
+            <div id="cat" onclick="petCat()">🐱</div>
+            <p id="cat-reaction"></p>
+        </div>
+    </div>
+    <div id="confetti"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/confetti-js/0.0.18/confetti.min.js"></script>
+    <script>
+        function showQuark() {
+            alert("Marc liebt Quark! 🥛");
+            spawnConfetti();
+        }
+        
+        function showTomato() {
+            alert("Tomatenmark macht Marc stark! 🍅💪");
+            spawnConfetti();
+        }
+        
+        function showDuck() {
+            alert("Quak quak! Die Enten freuen sich über Marc! 🦆");
+            spawnConfetti();
+        }
+        
+        function spawnConfetti() {
+            var confettiSettings = { target: 'confetti', max: 80, size: 2, animate: true, props: ['circle', 'square', 'triangle', 'line'], colors: [[165,104,246],[230,61,135],[0,199,228],[253,214,126]], clock: 25, rotate: true, width: 1920, height: 1080 };
+            var confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+            setTimeout(() => {
+                confetti.clear();
+            }, 3000);
+        }
+        
+        function moveMarcRandomly() {
+            var marc = document.getElementById('marc');
+            marc.style.transform = `translateX(${Math.random() * 80 - 40}%) rotate(${Math.random() * 360}deg)`;
+            spawnConfetti();
+        }
+        
+        function petCat() {
+            var cat = document.getElementById('cat');
+            var reaction = document.getElementById('cat-reaction');
+            var reactions = ["Miau! 😺", "Schnurr... 😻", "Prrrr... 🐱", "Miau Miau! 😸"];
+            reaction.textContent = reactions[Math.floor(Math.random() * reactions.length)];
+            cat.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                cat.style.transform = 'scale(1)';
+            }, 300);
+            spawnConfetti();
+        }
+    </script>
+</body>
+</html>
