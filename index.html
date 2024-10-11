@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marcs Fantastischer Geburtstag</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
         
         body {
-            font-family: 'Comic Neue', cursive;
+            font-family: 'Open Sans', sans-serif;
             background-color: #FFD700;
             color: #333;
             margin: 0;
@@ -23,14 +23,14 @@
             padding: 20px;
             box-shadow: 0 0 20px rgba(0,0,0,0.2);
         }
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #FF6B6B;
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px #FFD700;
+            text-shadow: 1px 1px #FFD700;
         }
-        .poem {
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 1.8em; }
+        .poem, #park, #cat-segment, #countdown {
             background-color: #E0FFFF;
             padding: 20px;
             border-radius: 15px;
@@ -38,7 +38,7 @@
         }
         .stanza {
             margin-bottom: 20px;
-            font-size: 1.2em;
+            font-size: 1.1em;
             line-height: 1.6;
         }
         .clickable {
@@ -58,23 +58,18 @@
         #park {
             height: 200px;
             background: linear-gradient(to bottom, #87CEEB, #90EE90);
-            border-radius: 15px;
             position: relative;
             overflow: hidden;
-            margin-top: 20px;
         }
-        #marc {
+        #marc, #cat {
             position: absolute;
             bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
             font-size: 40px;
             transition: all 0.5s ease;
             cursor: pointer;
         }
-        #marc:hover {
-            transform: translateX(-50%) scale(1.1);
-        }
+        #marc { left: 50%; transform: translateX(-50%); }
+        #marc:hover, #cat:hover { transform: translateX(-50%) scale(1.1); }
         .tree {
             position: absolute;
             bottom: 0;
@@ -89,31 +84,27 @@
             pointer-events: none;
             z-index: 9999;
         }
-        #cat-segment {
-            margin-top: 20px;
-            background-color: #FFF0F5;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-        #cat {
-            font-size: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        #cat:hover {
-            transform: scale(1.2);
-        }
+        #cat-segment { text-align: center; }
+        #cat { position: static; display: inline-block; }
         .instruction {
             font-style: italic;
             color: #666;
             margin-top: 10px;
+        }
+        #countdown {
+            font-size: 1.8em;
+            text-align: center;
+            font-weight: bold;
+            color: #FF6B6B;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Marcs Fantastischer Geburtstag! 🎉</h1>
+        
+        <div id="countdown"></div>
+        
         <div class="poem">
             <div class="stanza">
                 <p>Marc isst gerne <span class="clickable quark" onclick="showQuark()">Quark</span>,<br>
@@ -148,6 +139,7 @@
                 Doch Marc mag Tomatenmark und auch Quark, und so vermag es Marc nicht, den Quark zu lassen - denn er mag ihn einfach viel zu sehr, in allen Maßen.</p>
             </div>
         </div>
+        
         <div id="park">
             <div id="marc" onclick="moveMarcRandomly()">🧑</div>
             <div class="tree" style="left: 10%;">🌳</div>
@@ -156,6 +148,7 @@
             <div class="tree" style="right: 5%;">🌲</div>
         </div>
         <p class="instruction">Klicke auf Marc, um ihn zu bewegen!</p>
+        
         <div id="cat-segment">
             <h2>Marcs Katzenecke</h2>
             <p>Marc liebt auch Katzen! Klicke auf die Katze, um sie zu streicheln.</p>
@@ -167,6 +160,31 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/confetti-js/0.0.18/confetti.min.js"></script>
     <script>
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const birthday = new Date(currentYear, 9, 15); // Month is 0-indexed, so 9 is October
+            
+            if (now > birthday) {
+                birthday.setFullYear(currentYear + 1);
+            }
+            
+            const timeLeft = birthday - now;
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            
+            const countdownElement = document.getElementById('countdown');
+            
+            if (now.getMonth() === 9 && now.getDate() === 15) {
+                countdownElement.textContent = "Heute ist Marcs Geburtstag! 🎉🎂";
+                spawnConfetti();
+            } else {
+                countdownElement.textContent = `Noch ${days} Tage bis zu Marcs Geburtstag!`;
+            }
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000 * 60 * 60); // Update every hour
+        
         function showQuark() {
             alert("Marc liebt Quark! 🥛");
             spawnConfetti();
